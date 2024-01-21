@@ -16,6 +16,9 @@ export default {
       green: "#66a80f",
       red: "#e03131",
     },
+    screens: {
+      md: "850px",
+    },
   },
   plugins: [],
 };
