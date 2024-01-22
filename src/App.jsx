@@ -1,3 +1,4 @@
+import { useState } from "react";
 import AddFriendForm from "./components/AddFriendForm";
 import BillForm from "./components/BillFrom";
 import FriendList from "./components/FriendList";
@@ -24,6 +25,15 @@ function App() {
       balance: 0,
     },
   ];
+
+  const [toggleAddFriend, setToggleAddFriend] = useState(false);
+  const [name, setName] = useState("");
+
+  console.log(toggleAddFriend);
+  function handleToggleAddFriend() {
+    setToggleAddFriend((toggleAddFriend) => !toggleAddFriend);
+  }
+
   return (
     <>
       <div className="flex flex-col gap-10 md:flex-row">
@@ -35,8 +45,10 @@ function App() {
             ))}
           </ul>
           {/* AddFriendForm */}
-          <AddFriendForm />
-          <Button className={`float-end`}>Add Friend</Button>
+          {toggleAddFriend && <AddFriendForm />}
+          <Button className={`float-end`} onClick={handleToggleAddFriend}>
+            {toggleAddFriend ? "Close" : "Add Friend"}
+          </Button>
         </div>
         <div className="mx-auto w-[440px]">
           {/* BillForm */}
