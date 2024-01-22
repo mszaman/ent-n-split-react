@@ -30,8 +30,8 @@ function App() {
   const [name, setName] = useState("");
   const [image, setImage] = useState("https://i.pravatar.cc/48");
   const [friends, setFriends] = useState(initialFriends);
+  const [selectedFriend, setSelectedFriend] = useState(null);
 
-  console.log(friends);
   function handleToggleAddFriend() {
     setToggleAddFriend((toggleAddFriend) => !toggleAddFriend);
   }
@@ -41,16 +41,39 @@ function App() {
     setToggleAddFriend(false);
   }
 
+  function handleSelectFriend(friend) {
+    setSelectedFriend((sf) => (sf?.id === friend.id ? null : friend));
+    setToggleAddFriend(false);
+  }
+
+  function handleSplitBill(value) {
+    console.log(value);
+
+    setFriends((friends) =>
+      friends.map((friend) =>
+        friend.id === selectedFriend.id
+          ? { ...friend, balance: friend.balance + value }
+          : friend,
+      ),
+    );
+  }
+
   return (
     <>
       <div className="flex flex-col gap-10 md:flex-row">
         <div className="mx-auto w-[340px]">
           <ul className="mb-8 flex flex-col gap-1">
-            {friends.map((f) => (
+            {friends.map((friend) => (
               // FriendList
-              <FriendList key={f.id} {...f} />
+              <FriendList
+                key={friend.id}
+                friend={friend}
+                onSelectFriend={handleSelectFriend}
+                selectedFriend={selectedFriend}
+              />
             ))}
           </ul>
+
           {/* AddFriendForm */}
           {toggleAddFriend && (
             <AddFriendForm
@@ -61,13 +84,20 @@ function App() {
               onAddFriend={handleAddFriend}
             />
           )}
+
           <Button className={`float-end`} onClick={handleToggleAddFriend}>
             {toggleAddFriend ? "Close" : "Add Friend"}
           </Button>
         </div>
+
         <div className="mx-auto w-[440px]">
           {/* BillForm */}
-          <BillForm />
+          {selectedFriend && (
+            <BillForm
+              selectedFriend={selectedFriend}
+              onSplitBill={handleSplitBill}
+            />
+          )}
         </div>
       </div>
     </>
