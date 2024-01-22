@@ -11,9 +11,6 @@ export default function BillForm({ selectedFriend, onSplitBill }) {
   function handleSubmit(e) {
     e.preventDefault();
     onSplitBill(whoIsPaying === "user" ? paidByFriend : -paidByUser);
-    setBill("");
-    setPaidByUser("");
-    setWhoIsPaying("user");
   }
 
   return (
